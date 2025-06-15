@@ -24,9 +24,9 @@ const OrderDetails = () => {
   const orderItems = order.order_items.map((orderItem: any) => {
     return {
       id: orderItem.id,
-      title: orderItem.products.title,
-      heroImage: orderItem.products.heroImage,
-      price: orderItem.products.price,
+      title: orderItem.projects.title,
+      heroImage: orderItem.projects.heroImage,
+      price: orderItem.projects.price,
       quantity: orderItem.quantity,
     };
   });

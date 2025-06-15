@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-const Product = () => {
+const Project = () => {
   return (
     <View>
-      <Text>Product</Text>
+      <Text>Project</Text>
     </View>
   );
 };
 
-export default Product;
+export default Project;
 
 const styles = StyleSheet.create({});

@@ -8,19 +8,19 @@ import {
 } from 'react-native';
 import { Redirect, Stack, useLocalSearchParams } from 'expo-router';
 
-import { ProductListItem } from '../../components/product-list-item';
-import { getCategoryAndProducts } from '../../api/api';
+import { ProjectListItem } from '../../components/project-list-item';
+import { getCategoryAndProjects } from '../../api/api';
 
 const Category = () => {
   const { slug } = useLocalSearchParams<{ slug: string }>();
 
-  const { data, error, isLoading } = getCategoryAndProducts(slug);
+  const { data, error, isLoading } = getCategoryAndProjects(slug);
 
   if (isLoading) return <ActivityIndicator />;
   if (error || !data) return <Text>Error: {error?.message}</Text>;
-  if (!data.category || !data.products) return <Redirect href='/404' />;
+  if (!data.category || !data.projects) return <Redirect href='/404' />;
 
-  const { category, products } = data;
+  const { category, projects } = data;
 
   return (
     <View style={styles.container}>
@@ -28,12 +28,12 @@ const Category = () => {
       <Image source={{ uri: category.imageUrl }} style={styles.categoryImage} />
       <Text style={styles.categoryName}>{category.name}</Text>
       <FlatList
-        data={products}
+        data={projects}
         keyExtractor={item => item.id.toString()}
-        renderItem={({ item }) => <ProductListItem product={item} />}
+        renderItem={({ item }) => <ProjectListItem project={item} />}
         numColumns={2}
-        columnWrapperStyle={styles.productRow}
-        contentContainerStyle={styles.productsList}
+        columnWrapperStyle={styles.projectRow}
+        contentContainerStyle={styles.projectsList}
       />
     </View>
   );
@@ -59,28 +59,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
   },
-  productsList: {
+  projectsList: {
     flexGrow: 1,
   },
-  productRow: {
+  projectRow: {
     justifyContent: 'space-between',
   },
-  productContainer: {
+  projectContainer: {
     flex: 1,
     margin: 8,
   },
-  productImage: {
+  projectImage: {
     width: '100%',
     height: 150,
     resizeMode: 'cover',
     borderRadius: 8,
   },
-  productTitle: {
+  projectTitle: {
     fontSize: 16,
     fontWeight: 'bold',
     marginTop: 8,
   },
-  productPrice: {
+  projectPrice: {
     fontSize: 14,
     color: '#888',
     marginTop: 4,

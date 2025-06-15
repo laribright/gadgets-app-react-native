@@ -15,7 +15,7 @@ export type Database = {
           id: number
           imageUrl: string
           name: string
-          products: number[] | null
+          projects: number[] | null
           slug: string
         }
         Insert: {
@@ -23,7 +23,7 @@ export type Database = {
           id?: number
           imageUrl: string
           name: string
-          products?: number[] | null
+          projects?: number[] | null
           slug: string
         }
         Update: {
@@ -31,7 +31,7 @@ export type Database = {
           id?: number
           imageUrl?: string
           name?: string
-          products?: number[] | null
+          projects?: number[] | null
           slug?: string
         }
         Relationships: []
@@ -79,21 +79,21 @@ export type Database = {
           created_at: string
           id: number
           order: number
-          product: number
+          project: number
           quantity: number
         }
         Insert: {
           created_at?: string
           id?: number
           order: number
-          product: number
+          project: number
           quantity: number
         }
         Update: {
           created_at?: string
           id?: number
           order?: number
-          product?: number
+          project?: number
           quantity?: number
         }
         Relationships: [
@@ -105,15 +105,15 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "order_item_product_fkey"
-            columns: ["product"]
+            foreignKeyName: "order_item_project_fkey"
+            columns: ["project"]
             isOneToOne: false
-            referencedRelation: "product"
+            referencedRelation: "project"
             referencedColumns: ["id"]
           },
         ]
       }
-      product: {
+      project: {
         Row: {
           category: number
           created_at: string
@@ -149,7 +149,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "product_category_fkey"
+            foreignKeyName: "project_category_fkey"
             columns: ["category"]
             isOneToOne: false
             referencedRelation: "category"
@@ -200,9 +200,9 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      decrement_product_quantity: {
+      decrement_project_quantity: {
         Args: {
-          product_id: number
+          project_id: number
           quantity: number
         }
         Returns: undefined

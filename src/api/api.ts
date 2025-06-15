@@ -3,30 +3,30 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../providers/auth-provider';
 import { generateOrderSlug } from '../utils/utils';
 
-export const getProductsAndCategories = () => {
+export const getProjectsAndCategories = () => {
   return useQuery({
-    queryKey: ['products', 'categories'],
+    queryKey: ['projects', 'categories'],
     queryFn: async () => {
-      const [products, categories] = await Promise.all([
-        supabase.from('product').select('*'),
+      const [projects, categories] = await Promise.all([
+        supabase.from('project').select('*'),
         supabase.from('category').select('*'),
       ]);
 
-      if (products.error || categories.error) {
+      if (projects.error || categories.error) {
         throw new Error('An error occurred while fetching data');
       }
 
-      return { products: products.data, categories: categories.data };
+      return { projects: projects.data, categories: categories.data };
     },
   });
 };
 
-export const getProduct = (slug: string) => {
+export const getProject = (slug: string) => {
   return useQuery({
-    queryKey: ['product', slug],
+    queryKey: ['project', slug],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('product')
+        .from('project')
         .select('*')
         .eq('slug', slug)
         .single();
@@ -42,9 +42,9 @@ export const getProduct = (slug: string) => {
   });
 };
 
-export const getCategoryAndProducts = (categorySlug: string) => {
+export const getCategoryAndProjects = (categorySlug: string) => {
   return useQuery({
-    queryKey: ['categoryAndProducts', categorySlug],
+    queryKey: ['categoryAndProjects', categorySlug],
     queryFn: async () => {
       const { data: category, error: categoryError } = await supabase
         .from('category')
@@ -56,16 +56,16 @@ export const getCategoryAndProducts = (categorySlug: string) => {
         throw new Error('An error occurred while fetching category data');
       }
 
-      const { data: products, error: productsError } = await supabase
-        .from('product')
+      const { data: projects, error: projectsError } = await supabase
+        .from('project')
         .select('*')
         .eq('category', category.id);
 
-      if (productsError) {
-        throw new Error('An error occurred while fetching products data');
+      if (projectsError) {
+        throw new Error('An error occurred while fetching projects data');
       }
 
-      return { category, products };
+      return { category, projects };
     },
   });
 };
@@ -135,37 +135,37 @@ export const createOrderItem = () => {
     async mutationFn(
       insertData: {
         orderId: number;
-        productId: number;
+        projectId: number;
         quantity: number;
       }[]
     ) {
       const { data, error } = await supabase
         .from('order_item')
         .insert(
-          insertData.map(({ orderId, quantity, productId }) => ({
+          insertData.map(({ orderId, quantity, projectId }) => ({
             order: orderId,
-            product: productId,
+            project: projectId,
             quantity,
           }))
         )
         .select('*');
 
-      const productQuantities = insertData.reduce(
-        (acc, { productId, quantity }) => {
-          if (!acc[productId]) {
-            acc[productId] = 0;
+      const projectQuantities = insertData.reduce(
+        (acc, { projectId, quantity }) => {
+          if (!acc[projectId]) {
+            acc[projectId] = 0;
           }
-          acc[productId] += quantity;
+          acc[projectId] += quantity;
           return acc;
         },
         {} as Record<number, number>
       );
 
       await Promise.all(
-        Object.entries(productQuantities).map(
-          async ([productId, totalQuantity]) =>
-            supabase.rpc('decrement_product_quantity', {
-              product_id: Number(productId),
+        Object.entries(projectQuantities).map(
+          async ([projectId, totalQuantity]) =>
+            supabase.rpc('decrement_project_quantity', {
+              project_id: Number(projectId),
               quantity: totalQuantity,
             })
         )
@@ -191,7 +191,7 @@ export const getMyOrder = (slug: string) => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('order')
-        .select('*, order_items:order_item(*, products:product(*))')
+        .select('*, order_items:order_item(*, projects:project(*))')
         .eq('slug', slug)
         .eq('user', id)
         .single();

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "rn-shop",
-    "scheme": "rn-shop",
-    "slug": "rn-shop",
+    "name": "projectchain-marketplace",
+    "scheme": "projectchain",
+    "slug": "projectchain",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

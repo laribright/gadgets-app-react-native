@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function ProductLayout() {
+export default function ProjectLayout() {
   return (
     <Stack>
       <Stack.Screen

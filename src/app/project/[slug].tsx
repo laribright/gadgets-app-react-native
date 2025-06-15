@@ -11,18 +11,18 @@ import { useToast } from 'react-native-toast-notifications';
 import { useState } from 'react';
 
 import { useCartStore } from '../../store/cart-store';
-import { getProduct } from '../../api/api';
+import { getProject } from '../../api/api';
 import { ActivityIndicator } from 'react-native';
 
-const ProductDetails = () => {
+const ProjectDetails = () => {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const toast = useToast();
 
-  const { data: product, error, isLoading } = getProduct(slug);
+  const { data: project, error, isLoading } = getProject(slug);
 
   const { items, addItem, incrementItem, decrementItem } = useCartStore();
 
-  const cartItem = items.find(item => item.id === product?.id);
+  const cartItem = items.find(item => item.id === project?.id);
 
   const initialQuantity = cartItem ? cartItem.quantity : 0;
 
@@ -30,12 +30,12 @@ const ProductDetails = () => {
 
   if (isLoading) return <ActivityIndicator />;
   if (error) return <Text>Error: {error.message}</Text>;
-  if (!product) return <Redirect href='/404' />;
+  if (!project) return <Redirect href='/404' />;
 
   const increaseQuantity = () => {
-    if (quantity < product.maxQuantity) {
+    if (quantity < project.maxQuantity) {
       setQuantity(prev => prev + 1);
-      incrementItem(product.id);
+      incrementItem(project.id);
     } else {
       toast.show('Cannot add more than maximum quantity', {
         type: 'warning',
@@ -48,18 +48,18 @@ const ProductDetails = () => {
   const decreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity(prev => prev - 1);
-      decrementItem(product.id);
+      decrementItem(project.id);
     }
   };
 
   const addToCart = () => {
     addItem({
-      id: product.id,
-      title: product.title,
-      heroImage: product.heroImage,
-      price: product.price,
+      id: project.id,
+      title: project.title,
+      heroImage: project.heroImage,
+      price: project.price,
       quantity,
-      maxQuantity: product.maxQuantity,
+      maxQuantity: project.maxQuantity,
     });
     toast.show('Added to cart', {
       type: 'success',
@@ -68,26 +68,26 @@ const ProductDetails = () => {
     });
   };
 
-  const totalPrice = (product.price * quantity).toFixed(2);
+  const totalPrice = (project.price * quantity).toFixed(2);
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: product.title }} />
+      <Stack.Screen options={{ title: project.title }} />
 
-      <Image source={{ uri: product.heroImage }} style={styles.heroImage} />
+      <Image source={{ uri: project.heroImage }} style={styles.heroImage} />
 
       <View style={{ padding: 16, flex: 1 }}>
-        <Text style={styles.title}>Title: {product.title}</Text>
-        <Text style={styles.slug}>Slug: {product.slug}</Text>
+        <Text style={styles.title}>Title: {project.title}</Text>
+        <Text style={styles.slug}>Slug: {project.slug}</Text>
         <View style={styles.priceContainer}>
           <Text style={styles.price}>
-            Unit Price: ${product.price.toFixed(2)}
+            Unit Price: ${project.price.toFixed(2)}
           </Text>
           <Text style={styles.price}>Total Price: ${totalPrice}</Text>
         </View>
 
         <FlatList
-          data={product.imagesUrl}
+          data={project.imagesUrl}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <Image source={{ uri: item }} style={styles.image} />
@@ -111,7 +111,7 @@ const ProductDetails = () => {
           <TouchableOpacity
             style={styles.quantityButton}
             onPress={increaseQuantity}
-            disabled={quantity >= product.maxQuantity}
+            disabled={quantity >= project.maxQuantity}
           >
             <Text style={styles.quantityButtonText}>+</Text>
           </TouchableOpacity>
@@ -132,7 +132,7 @@ const ProductDetails = () => {
   );
 };
 
-export default ProductDetails;
+export default ProjectDetails;
 
 const styles = StyleSheet.create({
   container: {

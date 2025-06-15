@@ -1,13 +1,16 @@
+
+
 import { ImageSourcePropType } from 'react-native';
 import { Category } from './category';
 
-export type Product = {
+export type Project = {
   id: number;
   title: string;
   slug: string;
   imagesUrl: ImageSourcePropType[];
   price: number;
   heroImage: ImageSourcePropType;
-  category: Omit<Category, 'products'>;
+  category: Omit<Category, 'projects'>;
   maxQuantity: number;
 };
+

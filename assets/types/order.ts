@@ -1,4 +1,4 @@
-import { Product } from './product';
+import { Project } from './project';
 
 export type OrderStatus = 'Pending' | 'Completed' | 'Shipped' | 'InTransit';
 
@@ -9,5 +9,5 @@ export type Order = {
   details: string;
   status: OrderStatus;
   date: string;
-  items: Product[];
+  items: Project[];
 };

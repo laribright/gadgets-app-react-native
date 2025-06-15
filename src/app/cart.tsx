@@ -101,7 +101,7 @@ export default function Cart() {
             createSupabaseOrderItem(
               items.map(item => ({
                 orderId: data.id,
-                productId: item.id,
+                projectId: item.id,
                 quantity: item.quantity,
               })),
               {
