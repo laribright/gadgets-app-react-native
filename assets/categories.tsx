@@ -1,5 +1,5 @@
 import { Category } from './types/category';
-import { PROJECTS } from '.s';
+import { PROJECTS } from './projects';
 
 export const CATEGORIES: Category[] = [
   {
